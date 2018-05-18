@@ -10,18 +10,21 @@ Build a JSON Schema with functions
 import * as schema from 'functional-json-schema';
 
 const JSONschema = schema.schema({
-  person: {
-    friends: schema.arrayOf(schema.definition('user')),
-    id: 'string*',
-    friend_ids: schema.required(schema.arrayOf(schema.definition('User'))),
-  }
-})
+    person: {
+        friends: schema.types.arrayOf(schema.types.definition('user')),
+        id: 'string*',
+        friend_ids: schema.types.arrayOf(schema.types.definition('User'), { required: true }),
+    }
+}, null, { schema: 'http://json-schema.org/draft-06/schema#' })
 
 /*
 
 => {
+  $schema: 'http://json-schema.org/draft-06/schema#',
+  type: 'object',
   properties: {
     person: {
+      type: 'object',
       properties: {
         friends: {
           "type": "array",

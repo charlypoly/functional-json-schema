@@ -19,7 +19,15 @@ const schemaDescriptorReducer = (sche: JSONSchema6, curr: object, key: string) =
     return sche;
 };
 
-export const schema = (schemaDescriptor: SchemaDescriptor): JSONSchema6 => reduce<SchemaDescriptor, JSONSchema6>(
+interface SchemaDescriptorOptions {
+    schema: JSONSchema6['$schema'];
+}
+
+export const schema = (
+    schemaDescriptor: SchemaDescriptor,
+    definitions?: JSONSchema6['definitions'],
+    options?: SchemaDescriptorOptions
+): JSONSchema6 => reduce<SchemaDescriptor, JSONSchema6>(
     schemaDescriptor,
     schemaDescriptorReducer,
     {}
@@ -61,4 +69,4 @@ const JSONschema = schema({
         id: 'string*',
         friend_ids: types.arrayOf(types.definition('User'), { required: true }),
     }
-})
+}, null, { schema: 'http://json-schema.org/draft-06/schema#' })
