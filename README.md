@@ -11,9 +11,9 @@ import * as schema from 'functional-json-schema';
 
 const JSONschema = schema.schema({
   person: {
-    friends: schema.arrayOf(schema.defintinion('user')),
+    friends: schema.arrayOf(schema.definition('user')),
     id: 'string*',
-    friend_ids: schema.required(schema.arrayOf(schema.defintinion('User'))),
+    friend_ids: schema.required(schema.arrayOf(schema.definition('User'))),
   }
 })
 
