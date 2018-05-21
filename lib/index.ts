@@ -2,7 +2,7 @@ import { JSONSchema6TypeName, JSONSchema6 } from "json-schema";
 import { reduce, isObject } from "lodash";
 
 interface TypeDescriptor {
-    type: JSONSchema6;
+    rawType: JSONSchema6;
     required: boolean;
 }
 
@@ -34,21 +34,30 @@ export const schema = (
 )
 
 export namespace types {
-    export const arrayOf = (typeDescriptor: TypeDescriptor, options?: TypeDescriptorOptions): TypeDescriptor => constraints.required({
-        type: {
+
+    export const normalize = (typeDescriptor: TypeDescriptor | JSONSchema6TypeName): TypeDescriptor => {
+        if (typeof typeDescriptor === 'string') {
+            return type(typeDescriptor);
+        } else {
+            return typeDescriptor
+        }
+    }
+
+    export const arrayOf = (typeDescriptor: TypeDescriptor | JSONSchema6TypeName, options?: TypeDescriptorOptions): TypeDescriptor => constraints.required({
+        rawType: {
             type: 'array',
-            items: typeDescriptor.type
+            items: normalize(typeDescriptor).rawType
         },
         required: false
     }, options && options.required ? options.required : false)
 
     export const definition = ($ref: string): TypeDescriptor => ({
-        type: { $ref },
+        rawType: { $ref },
         required: false
     })
 
     export const type = (type: JSONSchema6TypeName, options?: TypeDescriptorOptions): TypeDescriptor => constraints.required({
-        type: { type },
+        rawType: { type },
         required: false
     }, options && options.required ? options.required : false)
 }
