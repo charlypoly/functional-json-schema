@@ -7,6 +7,7 @@ describe('types', () => {
         expect(
             types.type('string')
         ).toEqual({
+            "__typename": 'TypeDescriptor',
             "required": false,
             "rawType": { "type": "string" }
         });
@@ -16,6 +17,7 @@ describe('types', () => {
         expect(
             constraints.required(types.type('string'), true)
         ).toEqual({
+            "__typename": 'TypeDescriptor',
             "required": true,
             "rawType": { "type": "string" }
         });
@@ -25,6 +27,7 @@ describe('types', () => {
         expect(
             types.normalize('string')
         ).toEqual({
+            "__typename": 'TypeDescriptor',
             "required": false,
             "rawType": { "type": "string" }
         });
@@ -35,6 +38,7 @@ describe('types', () => {
             expect(
                 types.arrayOf('string')
             ).toEqual({
+                "__typename": 'TypeDescriptor',
                 "required": false,
                 "rawType": {
                     "items": { "type": "string" },
@@ -46,6 +50,7 @@ describe('types', () => {
             expect(
                 types.arrayOf(types.type('string'))
             ).toEqual({
+                "__typename": 'TypeDescriptor',
                 "required": false,
                 "rawType": {
                     "items": { "type": "string" },

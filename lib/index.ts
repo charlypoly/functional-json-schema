@@ -1,22 +1,44 @@
 import { JSONSchema6TypeName, JSONSchema6 } from "json-schema";
-import { reduce, isObject } from "lodash";
+import { reduce, isObject, get, omit, filter, each, map, compact, assign } from "lodash";
 
 interface TypeDescriptor {
+    __typename: 'TypeDescriptor',
     rawType: JSONSchema6;
     required: boolean;
 }
 
 type TypeDescriptorOptions = { required: boolean; };
 
-interface SchemaDescriptor { }
+interface SchemaDescriptor {
+    [k: string]: TypeDescriptor | SchemaDescriptor;
+}
 
-const schemaDescriptorReducer = (sche: JSONSchema6, curr: object, key: string) => {
-    if (isObject(curr)) {
-        sche.properties[key] = schemaDescriptorReducer(sche, curr, key);
+const isTypeDescriptor = (value: object): value is TypeDescriptor => {
+    return get(value, '__typename') === 'TypeDescriptor'
+}
+
+const getRequired = (properties: SchemaDescriptor) => {
+    return compact(
+        map(properties, (type, k) => isTypeDescriptor(type) && type.required ? k : undefined)
+    );
+}
+
+const schemaDescriptorReducer = (result: JSONSchema6, curr: SchemaDescriptor | TypeDescriptor, key: string) => {
+    if (!isTypeDescriptor(curr)) {
+        result.properties[key] = {
+            type: 'object',
+            required: getRequired(curr),
+            properties: {}
+        }
+        each(curr, (v, k) => {
+            (result.properties[key] as JSONSchema6).properties[k] = {
+                ...omit(schemaDescriptorReducer((result.properties[key] as JSONSchema6), v, k), ['required', '__typename']),
+            } as any;
+        })
     } else {
-        sche.properties[key] = curr;
+        result = curr.rawType;
     }
-    return sche;
+    return result;
 };
 
 interface SchemaDescriptorOptions {
@@ -30,7 +52,10 @@ export const schema = (
 ): JSONSchema6 => reduce<SchemaDescriptor, JSONSchema6>(
     schemaDescriptor,
     schemaDescriptorReducer,
-    {}
+    {
+        type: 'object',
+        properties: {}
+    }
 )
 
 export namespace types {
@@ -44,6 +69,7 @@ export namespace types {
     }
 
     export const arrayOf = (typeDescriptor: TypeDescriptor | JSONSchema6TypeName, options?: TypeDescriptorOptions): TypeDescriptor => constraints.required({
+        __typename: 'TypeDescriptor',
         rawType: {
             type: 'array',
             items: normalize(typeDescriptor).rawType
@@ -52,11 +78,13 @@ export namespace types {
     }, options && options.required ? options.required : false)
 
     export const definition = ($ref: string): TypeDescriptor => ({
+        __typename: 'TypeDescriptor',
         rawType: { $ref },
         required: false
     })
 
     export const type = (type: JSONSchema6TypeName, options?: TypeDescriptorOptions): TypeDescriptor => constraints.required({
+        __typename: 'TypeDescriptor',
         rawType: { type },
         required: false
     }, options && options.required ? options.required : false)
