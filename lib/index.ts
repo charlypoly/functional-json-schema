@@ -40,7 +40,7 @@ export namespace types {
             items: typeDescriptor.type
         },
         required: false
-    }, options.required ? options.required : false)
+    }, options && options.required ? options.required : false)
 
     export const definition = ($ref: string): TypeDescriptor => ({
         type: { $ref },
@@ -50,7 +50,7 @@ export namespace types {
     export const type = (type: JSONSchema6TypeName, options?: TypeDescriptorOptions): TypeDescriptor => constraints.required({
         type: { type },
         required: false
-    }, options.required ? options.required : false)
+    }, options && options.required ? options.required : false)
 }
 
 export namespace constraints {
@@ -63,10 +63,10 @@ export namespace constraints {
 
 // DSL example
 
-const JSONschema = schema({
-    person: {
-        friends: types.arrayOf(types.definition('user')),
-        id: 'string*',
-        friend_ids: types.arrayOf(types.definition('User'), { required: true }),
-    }
-}, null, { schema: 'http://json-schema.org/draft-06/schema#' })
+// const JSONschema = schema({
+//     person: {
+//         friends: types.arrayOf(types.definition('user')),
+//         id: 'string*',
+//         friend_ids: types.arrayOf(types.definition('User'), { required: true }),
+//     }
+// }, null, { schema: 'http://json-schema.org/draft-06/schema#' })

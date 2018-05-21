@@ -8,9 +8,30 @@
   "dependencies": {
     "lodash": "^4.17.10"
   },
+  "scripts": {
+    "test": "jest"
+  },
   "devDependencies": {
+    "@types/jest": "^22.2.3",
     "@types/json-schema": "^6.0.1",
     "@types/lodash": "^4.14.108",
-    "standard-version": "^4.3.0"
+    "jest": "^22.4.4",
+    "standard-version": "^4.3.0",
+    "ts-jest": "^22.4.6",
+    "typescript": "^2.8.3"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
   }
 }
