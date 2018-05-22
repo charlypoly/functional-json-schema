@@ -12,12 +12,15 @@
     "test": "jest"
   },
   "devDependencies": {
+    "@types/ajv": "^1.0.0",
     "@types/jest": "^22.2.3",
     "@types/json-schema": "^6.0.1",
     "@types/lodash": "^4.14.108",
+    "ajv": "^6.5.0",
     "jest": "^22.4.4",
     "standard-version": "^4.3.0",
     "ts-jest": "^22.4.6",
+    "tslint": "^5.10.0",
     "typescript": "^2.8.3"
   },
   "jest": {
