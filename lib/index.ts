@@ -1,22 +1,22 @@
 import { JSONSchema6TypeName, JSONSchema6 } from "json-schema";
 import { reduce, isObject, get, omit, filter, each, map, compact, assign, has, isArray } from "lodash";
 
-interface ArrayTypeDescriptor {
+export interface ArrayTypeDescriptor {
     __typename: 'ArrayTypeDescriptor';
     name: keyof JSONSchema6;
     rawType: TypeDescriptor[];
     required: boolean;
 }
 
-interface TypeDescriptor {
+export interface TypeDescriptor {
     __typename: 'TypeDescriptor';
     rawType: JSONSchema6;
     required: boolean;
 }
 
-type TypeDescriptorOptions = { required: boolean; };
+export type TypeDescriptorOptions = { required: boolean; };
 
-interface SchemaDescriptor {
+export interface SchemaDescriptor {
     [k: string]: TypeDescriptor | ArrayTypeDescriptor | SchemaDescriptor;
 }
 
@@ -58,7 +58,7 @@ const schemaDescriptorReducer = (result: JSONSchema6, curr: SchemaDescriptor | T
     return result;
 };
 
-interface SchemaDescriptorOptions {
+export interface SchemaDescriptorOptions {
     schema: JSONSchema6['$schema'];
 }
 
