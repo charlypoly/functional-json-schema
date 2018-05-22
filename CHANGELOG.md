@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.0.2-1"></a>
+## [0.0.2-1](https://github.com/wittydeveloper/functional-json-schema/compare/v0.0.2-0...v0.0.2-1) (2018-05-22)
+
+
+
 <a name="0.0.2-0"></a>
 ## [0.0.2-0](https://github.com/wittydeveloper/functional-json-schema/compare/v0.0.1...v0.0.2-0) (2018-05-22)
 
