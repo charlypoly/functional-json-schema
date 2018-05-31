@@ -9,7 +9,7 @@ describe('types', () => {
             community_list: {
                 portfolio_ids: types.arrayOf('string', { required: true }),
                 project_id: types.type('string', { required: true }),
-                status: types.enumOf('string'),
+                status: types.enumOf('active', 'inactive'),
                 user: types.anyOf(
                     types.definition('User'),
                     types.definition('Admin'),
@@ -38,9 +38,7 @@ describe('types', () => {
                             ]
                         },
                         status: {
-                            enum: [
-                                { type: 'string' }
-                            ]
+                            enum: ['active', 'inactive']
                         }
                     },
                     required: ['portfolio_ids', 'project_id']

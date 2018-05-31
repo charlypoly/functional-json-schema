@@ -103,7 +103,11 @@ export namespace types {
     export const allOf = wrapMany('allOf');
     export const anyOf = wrapMany('anyOf');
     export const oneOf = wrapMany('oneOf');
-    export const enumOf = wrapMany('enum');
+    export const enumOf = (...values: string[]): TypeDescriptor => ({
+        __typename: 'TypeDescriptor',
+        rawType: { enum: values },
+        required: false
+    })
     // export const not = wrap('not');
 
 
