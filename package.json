@@ -1,7 +1,7 @@
 {
   "name": "functional-json-schema",
-  "version": "0.0.1",
-  "main": "index.js",
+  "version": "0.0.2-3",
+  "main": "dist/index.js",
   "repository": "git@github.com:wittydeveloper/functional-json-schema.git",
   "author": "Charly POLY <cpoly55@gmail.com>",
   "license": "MIT",
@@ -12,19 +12,22 @@
     "test": "jest"
   },
   "devDependencies": {
+    "@types/ajv": "^1.0.0",
     "@types/jest": "^22.2.3",
     "@types/json-schema": "^6.0.1",
     "@types/lodash": "^4.14.108",
+    "ajv": "^6.5.0",
     "jest": "^22.4.4",
     "standard-version": "^4.3.0",
     "ts-jest": "^22.4.6",
+    "tslint": "^5.10.0",
     "typescript": "^2.8.3"
   },
   "jest": {
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "testRegex": "(/__tests__/([^\\.d]*)|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
     "moduleFileExtensions": [
       "ts",
       "tsx",
