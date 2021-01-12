@@ -5,6 +5,6 @@
         "removeComments": true,
         "declaration": true,
         "outDir": "./dist",
-        "rootDir": "."
+        "rootDir": ".",
     }
 }

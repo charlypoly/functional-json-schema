@@ -1,4 +1,4 @@
-import { schema, types, constraints } from '../lib/index';
+import { types, constraints } from '../lib/index';
 
 
 describe('types', () => {
