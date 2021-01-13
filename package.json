@@ -1,6 +1,6 @@
 {
   "name": "functional-json-schema",
-  "version": "0.0.2-3",
+  "version": "1.0.0",
   "main": "dist/index.js",
   "repository": "git@github.com:wittydeveloper/functional-json-schema.git",
   "author": "Charly POLY <cpoly55@gmail.com>",
