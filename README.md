@@ -5,6 +5,8 @@ Build a JSON Schema with functions
 
 ## Schema DSL
 
+### Simple schema
+
 ```js
 
 import * as schema from 'functional-json-schema';
@@ -39,8 +41,86 @@ const JsonSchema = schema.schema({
 }
 */
 ```
+### Schema with definitions
 
-## Definition DSL
+```js
+
+import * as schema from 'functional-json-schema';
+
+const schemaWithDefinitions = schema(
+  {
+    community_list: {
+      portfolio_ids: types.arrayOf("string", { required: true }),
+      project_id: types.type("string", { required: true }),
+      status: types.enumOf("active", "inactive"),
+      user: types.anyOf(types.definition("User"), types.definition("Admin")),
+    },
+  }, {
+    User: {
+      firstName: types.type("string"),
+      lastName: types.type("string"),
+      jobTitle: types.type("string"),
+      companyId: types.type("string"),
+    },
+  },
+  { schema: 'http://json-schema.org/draft-06/schema#' }
+);
+
+/*
+=> {
+  $schema: 'http://json-schema.org/draft-06/schema#',
+  type: "object",
+  properties: {
+    community_list: {
+      type: "object",
+      properties: {
+        portfolio_ids: {
+          type: "array",
+          items: {
+            type: "string",
+          },
+        },
+        project_id: {
+          type: "string",
+        },
+        user: {
+          anyOf: [
+            { $ref: "#/definitions/User" },
+            { $ref: "#/definitions/Admin" },
+          ],
+        },
+        status: {
+          enum: ["active", "inactive"],
+        },
+      },
+      required: ["portfolio_ids", "project_id"],
+    },
+  },
+  definitions: {
+    User: {
+      type: "object",
+      properties: {
+        firstName: {
+          type: "string",
+        },
+        lastName: {
+          type: "string",
+        },
+        jobTitle: {
+          type: "string",
+        },
+        companyId: {
+          type: "string",
+        },
+      },
+      required: [],
+    },
+  }
+}
+*/
+```
+
+## standalone definition DSL
 
 ```js
 
