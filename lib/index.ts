@@ -24,6 +24,10 @@ export interface SchemaDescriptor {
   [k: string]: TypeDescriptor | ArrayTypeDescriptor | SchemaDescriptor;
 }
 
+export interface DefinitionObject {
+  [k: string]: SchemaDescriptor;
+}
+
 const isTypeDescriptor = (value: object): value is TypeDescriptor => {
   return get(value, "__typename") === "TypeDescriptor";
 };
@@ -73,9 +77,21 @@ const schemaDescriptorReducer = (
   return result;
 };
 
-export interface SchemaDescriptorOptions {
-  schema: JSONSchema6["$schema"];
-}
+const definitionsReducer = (
+  result: JSONSchema6["definitions"],
+  curr: SchemaDescriptor,
+  key: string
+) => {
+  result[key] = reduce<SchemaDescriptor, JSONSchema6>(
+    { root: curr },
+    schemaDescriptorReducer,
+    {
+      type: "object",
+      properties: {},
+    }
+  ).properties.root;
+  return result;
+};
 
 // {
 //     $schema: 'http://json-schema.org/draft-06/schema#',
@@ -96,9 +112,13 @@ export interface SchemaDescriptorOptions {
 //         }
 //     }
 // }
+export interface SchemaDescriptorOptions {
+  schema: JSONSchema6["$schema"];
+}
+
 export const schema = (
   schemaDescriptor: SchemaDescriptor,
-  definitions?: JSONSchema6["definitions"],
+  definitions?: DefinitionObject,
   options?: SchemaDescriptorOptions
 ): JSONSchema6 =>
   reduce<SchemaDescriptor, JSONSchema6>(
@@ -107,7 +127,13 @@ export const schema = (
     {
       type: "object",
       properties: {},
-      ...(definitions ? { definitions } : {}),
+      definitions: definitions
+        ? reduce<DefinitionObject, JSONSchema6["definitions"]>(
+            definitions,
+            definitionsReducer,
+            {}
+          )
+        : {},
       ...(options && options.schema ? { $schema: options.schema } : {}),
     }
   );
